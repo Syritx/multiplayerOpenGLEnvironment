@@ -10,8 +10,8 @@ namespace OpenGL.Environment.Client.Game
         Camera camera;
         Vector3 position;
 
-        float size = 10;
-        float yOffset = -20;
+        float size = NPCPlayer.size;
+        float yOffset = NPCPlayer.yOffset;
 
         public Player(Camera camera) {
             this.camera = camera;
