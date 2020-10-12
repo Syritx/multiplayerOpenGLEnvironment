@@ -25,8 +25,7 @@ namespace OpenGL.Environment.Client.Game
             Run(60);
         }
 
-        public static void CreatePlayer(Vector3 position, int id)
-        {
+        public static void CreatePlayer(Vector3 position, int id) {
             players[id] = new NPCPlayer(position);
         }
 

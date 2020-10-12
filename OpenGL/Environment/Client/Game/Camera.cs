@@ -6,7 +6,7 @@ namespace OpenGL.Environment.Client.Game
 {
     public class Camera
     {
-        public Vector3 position = new Vector3(-50, 20, 0);
+        public Vector3 position = new Vector3(0, 0, 0);
         public Vector3 front = new Vector3(0.0f, 0.0f, -0.001f);
         public Vector3 up = new Vector3(0.0f, .01f, 0.0f);
 

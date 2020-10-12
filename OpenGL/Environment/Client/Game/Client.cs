@@ -65,6 +65,19 @@ namespace OpenGL.Environment.Client.Game
                 string[] commands = command.Split('-');
                 int id = 0;
 
+                if (command.StartsWith("[CLIENT_CREATED]: ID: "))
+                {
+                    int newClientId = 0;
+                    string clientID = command.Split(new string[]
+                                                    {"[CLIENT_CREATED]: ID: "},
+                                                    StringSplitOptions.None)[1];
+
+                    newClientId = Int32.Parse(clientID);
+                    clientPositions[newClientId] = new Vector3(0, 0, 0);
+                    GameUI.CreatePlayer(clientPositions[newClientId], newClientId);
+                }
+
+
                 if (commands.Length == 3) {
                     if (commands[0].StartsWith("ID: "))
                     {
