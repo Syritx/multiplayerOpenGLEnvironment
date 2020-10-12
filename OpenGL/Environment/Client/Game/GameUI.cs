@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
@@ -9,11 +10,14 @@ namespace OpenGL.Environment.Client.Game
     {
         Camera camera;
         Player player;
+        public List<NPCPlayer> players;
 
         public GameUI(int width, int height, string title)
             : base(width,height,GraphicsMode.Default,title) {
             camera = new Camera(this);
             player = new Player(camera);
+
+            players = new List<NPCPlayer>();
 
             Run(60);
         }
@@ -26,6 +30,10 @@ namespace OpenGL.Environment.Client.Game
 
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
             player.render();
+
+            foreach (NPCPlayer NPC in players) {
+                NPC.render();
+            }
 
             SwapBuffers();
             base.OnRenderFrame(e);
