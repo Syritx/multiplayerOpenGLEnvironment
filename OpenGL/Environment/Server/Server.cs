@@ -48,10 +48,16 @@ namespace OpenGL.Environment.Server
             Console.WriteLine("sent message to client");
             IPEndPoint clientEndPoint = client.RemoteEndPoint as IPEndPoint;
 
+            string newClientMessage = "[CLIENT_CREATED]: " + idString;
+            foreach (Socket socketClient in clients)
+            {
+                byte[] newClient = Encoding.UTF8.GetBytes(newClientMessage);
+                if (socketClient != client) socketClient.Send(newClient);
+            }
+
             while (client.Connected) {
                 bytes = new byte[2048];
                 int i = client.Receive(bytes);
-                bool canSendMessage = true;
 
                 string command = Encoding.UTF8.GetString(bytes);
                 Console.WriteLine("[{0}, {1}] SENT: {2}",clientEndPoint.Address,
@@ -61,7 +67,7 @@ namespace OpenGL.Environment.Server
 
                 // SENDING ID
                 foreach(Socket clientSocket in clients) {
-                    if (clientSocket != client && canSendMessage) {
+                    if (clientSocket != client) {
                         try {
                             byte[] idBytes = Encoding.UTF8.GetBytes(newCommand);
                             clientSocket.Send(idBytes);
