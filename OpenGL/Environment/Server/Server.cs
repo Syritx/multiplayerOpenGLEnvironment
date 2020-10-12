@@ -13,6 +13,7 @@ namespace OpenGL.Environment.Server
         static Socket server;
         static List<Socket> clients;
         static ClientCommands clientCommands = new ClientCommands();
+        static int clientId = -1;
 
         static IPAddress ip = Dns.GetHostEntry(Dns.GetHostName()).AddressList[0];
         static int port = 5050;
@@ -35,9 +36,10 @@ namespace OpenGL.Environment.Server
         }
 
         static void clientThread(Socket client) {
-            string message = "welcome\n";
-            string positionCommand = null;
+            int currentClientId = clientId;
 
+            string message = "ID: " + currentClientId.ToString()+ " ";
+            string idString = "ID: " + currentClientId.ToString();
             byte[] messageBytes = Encoding.UTF8.GetBytes(message);
 
             byte[] bytes = new byte[2048];
@@ -52,17 +54,18 @@ namespace OpenGL.Environment.Server
                 bool canSendMessage = true;
 
                 string command = Encoding.UTF8.GetString(bytes);
-                if (command.ToLower().StartsWith("[position]: ")) {
-                    positionCommand = command;
-                }
-
                 Console.WriteLine("[{0}, {1}] SENT: {2}",clientEndPoint.Address,
                                                     clientEndPoint.Port,
                                                     command);
+                string newCommand = idString + "-" + command;
 
+                // SENDING ID
                 foreach(Socket clientSocket in clients) {
                     if (clientSocket != client && canSendMessage) {
-                        try { clientSocket.Send(bytes); }
+                        try {
+                            byte[] idBytes = Encoding.UTF8.GetBytes(newCommand);
+                            clientSocket.Send(idBytes);
+                        }
                         catch (Exception e) { clients.Remove(clientSocket); }
                     }
                 }
@@ -74,6 +77,7 @@ namespace OpenGL.Environment.Server
             while (true) {
 
                 Socket client = server.Accept();
+                clientId++;
                 clients.Add(client);
                 Task.Run(() => clientThread(client));
             }
