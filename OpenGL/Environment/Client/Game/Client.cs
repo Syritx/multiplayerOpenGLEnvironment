@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Text;
 
 using System.Net;
@@ -63,11 +63,58 @@ namespace OpenGL.Environment.Client.Game
 
                 command = responseData;
                 string[] commands = command.Split('-');
-                for (int i = 0; i < commands.Length; i++)
-                {
-                    Console.WriteLine(commands[i] + " " + i);
-                }
                 int id = 0;
+
+                if (commands.Length == 3) {
+                    if (commands[0].StartsWith("ID: "))
+                    {
+                        string idString = commands[0].Split(new string[] {"ID: "}, StringSplitOptions.None)[1];
+                        id = Int32.Parse(idString);
+                    }
+
+                    string[] coordinates = commands[2].Split(new string[] { ", " },
+                                                             StringSplitOptions.None);
+                    float[] floatCoordinates = new float[coordinates.Length];
+
+                    for (int i = 0; i < coordinates.Length; i++) {
+                        floatCoordinates[i] = float.Parse(coordinates[i]);
+                    }
+                    clientPositions[id] = new Vector3(floatCoordinates[0],
+                                                      floatCoordinates[1],
+                                                      floatCoordinates[2]);
+
+                    try {
+                        GameUI.CreatePlayer(clientPositions[id], id);
+                        Console.WriteLine("created player");
+                    }
+                    catch(Exception e) {}
+                }
+
+                else if (commands.Length == 2) {
+                    if (commands[0].StartsWith("ID: ")) {
+                        string idString = commands[0].Split(new string[] { "ID: " }, StringSplitOptions.None)[1];
+                        id = Int32.Parse(idString);
+                    }
+
+                    if (commands[1].StartsWith("[POSITION]: ")) {
+                        string positionCoords = commands[1].Split(new string[] { "[POSITION]: " }, StringSplitOptions.None)[1];
+                        string[] coordinates = positionCoords.Split(new string[] { ", " },
+                                                             StringSplitOptions.None);
+                        float[] floatCoordinates = new float[coordinates.Length];
+
+                        for (int i = 0; i < coordinates.Length; i++) {
+                            floatCoordinates[i] = float.Parse(coordinates[i]);
+                        }
+                        clientPositions[id] = new Vector3(floatCoordinates[0],
+                                                          floatCoordinates[1],
+                                                          floatCoordinates[2]);
+                        try {
+                            GameUI.CreatePlayer(clientPositions[id], id);
+                            Console.WriteLine("created player");
+                        }
+                        catch(Exception e) {}
+                    }
+                }
             }
         }
 

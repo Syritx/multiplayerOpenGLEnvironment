@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using OpenTK;
 using OpenTK.Graphics;
@@ -10,7 +10,7 @@ namespace OpenGL.Environment.Client.Game
     {
         Camera camera;
         Player player;
-        public List<NPCPlayer> players;
+        public static List<NPCPlayer> players;
 
         public GameUI(int width, int height, string title)
             : base(width,height,GraphicsMode.Default,title) {
@@ -18,8 +18,16 @@ namespace OpenGL.Environment.Client.Game
             player = new Player(camera);
 
             players = new List<NPCPlayer>();
+            for (int i = 0; i < 10; i++) {
+                players.Add(null);
+            }
 
             Run(60);
+        }
+
+        public static void CreatePlayer(Vector3 position, int id)
+        {
+            players[id] = new NPCPlayer(position);
         }
 
         protected override void OnRenderFrame(FrameEventArgs e)
@@ -32,7 +40,8 @@ namespace OpenGL.Environment.Client.Game
             player.render();
 
             foreach (NPCPlayer NPC in players) {
-                NPC.render();
+                if (NPC != null) 
+                    NPC.render();
             }
 
             SwapBuffers();
