@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
@@ -63,7 +63,7 @@ namespace OpenGL.Environment.Server
                 Console.WriteLine("[{0}, {1}] SENT: {2}",clientEndPoint.Address,
                                                     clientEndPoint.Port,
                                                     command);
-                string newCommand = idString + "-" + command;
+                string newCommand = idString + "-CMD-" + command;
 
                 // SENDING ID
                 foreach(Socket clientSocket in clients) {
