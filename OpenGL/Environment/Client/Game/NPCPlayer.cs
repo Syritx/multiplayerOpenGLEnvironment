@@ -7,7 +7,7 @@ namespace OpenGL.Environment.Client.Game
     public class NPCPlayer
     {
         public static float size = 2;
-        public static float yOffset = -10;
+        public static float yOffset = -5;
 
         public Vector3 position = new Vector3(0,0,0);
 
