@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Text;
 
 using System.Net;
@@ -62,7 +62,9 @@ namespace OpenGL.Environment.Client.Game
                 Console.WriteLine(responseData);
 
                 command = responseData;
-                string[] commands = command.Split('-');
+                string[] commands = command.Split(new string[]
+                                                    {"-CMD-"},
+                                                    StringSplitOptions.None);
                 int id = 0;
 
                 if (command.StartsWith("[CLIENT_CREATED]: ID: "))
@@ -96,7 +98,6 @@ namespace OpenGL.Environment.Client.Game
                     clientPositions[id] = new Vector3((float)floatCoordinates[0],
                                                       (float)floatCoordinates[1],
                                                       (float)floatCoordinates[2]);
-
                     try {
                         GameUI.CreatePlayer(clientPositions[id], id);
                         Console.WriteLine("created player");
