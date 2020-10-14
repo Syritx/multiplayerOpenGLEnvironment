@@ -75,6 +75,7 @@ namespace OpenGL.Environment.Client.Game
                     newClientId = Int32.Parse(clientID);
                     clientPositions[newClientId] = new Vector3(0, 0, 0);
                     GameUI.CreatePlayer(clientPositions[newClientId], newClientId);
+                    sendMessage("added new player");
                 }
 
 
@@ -87,14 +88,14 @@ namespace OpenGL.Environment.Client.Game
 
                     string[] coordinates = commands[2].Split(new string[] { ", " },
                                                              StringSplitOptions.None);
-                    float[] floatCoordinates = new float[coordinates.Length];
+                    double[] floatCoordinates = new double[coordinates.Length];
 
                     for (int i = 0; i < coordinates.Length; i++) {
-                        floatCoordinates[i] = float.Parse(coordinates[i]);
+                        floatCoordinates[i] = double.Parse(coordinates[i]);
                     }
-                    clientPositions[id] = new Vector3(floatCoordinates[0],
-                                                      floatCoordinates[1],
-                                                      floatCoordinates[2]);
+                    clientPositions[id] = new Vector3((float)floatCoordinates[0],
+                                                      (float)floatCoordinates[1],
+                                                      (float)floatCoordinates[2]);
 
                     try {
                         GameUI.CreatePlayer(clientPositions[id], id);
@@ -113,14 +114,14 @@ namespace OpenGL.Environment.Client.Game
                         string positionCoords = commands[1].Split(new string[] { "[POSITION]: " }, StringSplitOptions.None)[1];
                         string[] coordinates = positionCoords.Split(new string[] { ", " },
                                                              StringSplitOptions.None);
-                        float[] floatCoordinates = new float[coordinates.Length];
+                        double[] floatCoordinates = new double[coordinates.Length];
 
                         for (int i = 0; i < coordinates.Length; i++) {
-                            floatCoordinates[i] = float.Parse(coordinates[i]);
+                            floatCoordinates[i] = double.Parse(coordinates[i]);
                         }
-                        clientPositions[id] = new Vector3(floatCoordinates[0],
-                                                          floatCoordinates[1],
-                                                          floatCoordinates[2]);
+                        clientPositions[id] = new Vector3((float)floatCoordinates[0],
+                                                          (float)floatCoordinates[1],
+                                                          (float)floatCoordinates[2]);
                         try {
                             GameUI.CreatePlayer(clientPositions[id], id);
                             Console.WriteLine("created player");
@@ -128,6 +129,8 @@ namespace OpenGL.Environment.Client.Game
                         catch(Exception e) {}
                     }
                 }
+
+                Console.WriteLine(id);
             }
         }
 
