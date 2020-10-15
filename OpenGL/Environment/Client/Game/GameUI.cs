@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using OpenGL.Environment.Game.Landscape;
 using OpenTK;
@@ -60,10 +60,12 @@ namespace OpenGL.Environment.Client.Game
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
             player.render();
 
-            foreach (NPCPlayer NPC in players) {
-                if (NPC != null) 
-                    NPC.render();
-            }
+            try { 
+                foreach (NPCPlayer NPC in players) {
+                    if (NPC != null) 
+                        NPC.render();
+                }
+            }catch(InvalidOperationException e1) {}
 
             GL.Enable(EnableCap.Fog);
 
